@@ -28,41 +28,81 @@
 Для реализации основного меню можно использовать пример ниже или написать свой
 """
 
-money = 10.0
+MONEY = 10.0
 history = {}
 
+
+def input_float(message):
+    while True:
+        try:
+            res = float(input(message))
+            return res
+        except ValueError:
+            print('Это не число')
+
+
+def add_money():
+    global MONEY, history
+    print('\t', '-' * 20)
+    print('\tПополнение счета')
+    print(f"\tНа вашем счете {MONEY} руб")
+
+    delta = input_float('\tВведите сумму, на которую вы хотите пополнить счет: ')
+    if delta <= 0:
+        print('\tСчет можно только пополнить, снять деньги нельзя.')
+    else:
+        MONEY += delta
+
+
 def show_menu():
-    print('-' * 20)
+    print(f'\n{"-" * 20} текущий счет: {MONEY:.2f}')
     print('1. Пополнение счета')
     print('2. Новая покупка')
     print('3. История покупок')
     print('4. Выход')
-    choice = input('Выберите пункт меню: ')
-    return choice
+    item = input('Выберите пункт меню: ')
+    return item
 
-def add_money():
+
+def add_shopping():
+    global MONEY, history
     print('\t', '-' * 20)
-    print('\tПополнение счета')
-    print(f'\tНа вашем счете {money} руб')
-    res = input('\tВведите сумму, на которую вы хотите пополнить счет: ')
-    try:
-
-    case :
-
-
-def new_shopping():
-    print('')
-
-while True:
-
-    choice = show_menu()
-    if choice == '1':
-        add_money()
-    elif choice == '2':
-        pass
-    elif choice == '3':
-        pass
-    elif choice == '4':
-        break
+    print('\tНовая покупка')
+    k = input('\tВведите название покупки: ')
+    v = input_float('\tВведите стоимость покупки: ')
+    if v <= MONEY:
+        MONEY -= v
+        history[k] = v
     else:
-        print('Неверный пункт меню')
+        print('На счете не достаточно денег.')
+
+
+def print_shopping_list():
+    global history
+    print('\tИстория покупок')
+    if history:
+        for k in history:
+            print(f'\t{k} \t: {history[k]:.2f}')
+    else:
+        print('\tНет покупок')
+
+
+def main():
+    while True:
+        choice = show_menu()
+        if choice == '1':
+            add_money()
+        elif choice == '2':
+            add_shopping()
+        elif choice == '3':
+            print_shopping_list()
+        elif choice == '4':
+            break   # exit
+        else:
+            print('Неверный пункт меню')
+
+
+main()
+
+
+
